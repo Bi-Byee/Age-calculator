@@ -19,8 +19,9 @@ function getinput(){
     var usyear = dyear.value;
 
     var years = currentDate.getFullYear() - usyear;
-    var months = currentDate.getMonth() - usmon;
+    var months = currentDate.getMonth() + 1 - usmon;
     var days = currentDate.getDate() - usday;
+
 
     dday.style.borderColor ='hsl(0, 0%, 86%)'
     dmonth.style.borderColor ='hsl(0, 0%, 86%)'
@@ -41,7 +42,6 @@ function getinput(){
     if (months < 0 || (months === 0 && days < 0)) {
         years--; // Subtract 1 from the years if the current date is before the birth date
         months += 12; // Add 12 months to the months
-        console.log('here')
       }
       
       if (days < 0) {
@@ -73,7 +73,7 @@ function getinput(){
                 dmonth.style.borderColor = 'crimson'
                 break;
 
-        case (usday > 31 ): ermon.innerHTML ='Must be a valid month';
+        case (usmon > 12 ): ermon.innerHTML ='Must be a valid month';
                             myLabe2.style.color = 'crimson'
                             dmonth.style.borderColor = 'crimson'
                             break;
@@ -88,7 +88,8 @@ function getinput(){
                 dyear.style.borderColor  = 'crimson'
                 break;
 
-        case (usday > 31 ): eryer.innerHTML ='Must be a valid year';
+        case (usyear > currentDate.getFullYear()): 
+                            eryer.innerHTML ='Must be a valid year';
                             myLabe3.style.color = 'crimson'
                             dyear.style.borderColor  = 'crimson'
                             break;

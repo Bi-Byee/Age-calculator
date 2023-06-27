@@ -1,6 +1,6 @@
-var day = document.getElementById("dd");
-var month = document.getElementById("mm");
-var year = document.getElementById("yyyy");
+var dday = document.getElementById("dd");
+var dmonth = document.getElementById("mm");
+var dyear = document.getElementById("yyyy");
 var button = document.getElementById("request");
 var reday = document.getElementById("day");
 var remon = document.getElementById("month");
@@ -9,21 +9,22 @@ var erday = document.getElementById("errdd");
 var ermon = document.getElementById("errmm");
 var eryer = document.getElementById("erryy");
 
-const currentDate = new Date(); 
-const cuyear = currentDate.getFullYear();
-const cumonth = currentDate.getMonth() + 1;
-const cuday = currentDate.getDate();
+const currentDate = new Date();
 
 button.addEventListener("click", getinput);
 
 function getinput(){
-    var usday = day.value;
-    var usmon = month.value;
-    var usyear = year.value;
+    var usday = dday.value;
+    var usmon = dmonth.value;
+    var usyear = dyear.value;
 
-    day.style.borderColor ='hsl(0, 0%, 86%)'
-    month.style.borderColor ='hsl(0, 0%, 86%)'
-    year.style.borderColor ='hsl(0, 0%, 86%)'
+    var years = currentDate.getFullYear() - usyear;
+    var months = currentDate.getMonth() - usmon;
+    var days = currentDate.getDate() - usday;
+
+    dday.style.borderColor ='hsl(0, 0%, 86%)'
+    dmonth.style.borderColor ='hsl(0, 0%, 86%)'
+    dyear.style.borderColor ='hsl(0, 0%, 86%)'
 
     const myLabel = document.querySelector('label[for="dd"]');
     const myLabe2 = document.querySelector('label[for="mm"]');
@@ -36,62 +37,64 @@ function getinput(){
     myLabel.style.color = 'hsl(0, 0%, 8%)'
     myLabe2.style.color = 'hsl(0, 0%, 8%)'
     myLabe3.style.color = 'hsl(0, 0%, 8%)'
+ 
+    if (months < 0 || (months === 0 && days < 0)) {
+        years--; // Subtract 1 from the years if the current date is before the birth date
+        months += 12; // Add 12 months to the months
+        console.log('here')
+      }
+      
+      if (days < 0) {
+        const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 0);
+        days += lastMonth.getDate(); // Add the number of days in the last month
+        months--;
+        console.log('here2')
+      }
 
+
+    switch(usday){
+        case '':erday.innerHTML ='This field is required';
+                myLabel.style.color = 'crimson'
+                dday.style.borderColor = 'crimson'
+                break;
+
+        case (usday > 31 ): erday.innerHTML ='Must be a valid date';
+                            myLabel.style.color = 'crimson';
+                            dday.style.borderColor = 'crimson';
+                            break;
+
+        default:reday.innerHTML = days;
+                break;
+    }
     
-    if(usday==''){
-        erday.innerHTML ='This field is required';
-        myLabel.style.color = 'crimson'
-        day.style.borderColor = 'crimson'
-    }
-    else if(usday > 31){
-        erday.innerHTML ='Must be a valid date';
-        myLabel.style.color = 'crimson'
-        day.style.borderColor = 'crimson'
-    }
-    else{
-    var aday = cuday - usday;
-    if(aday <=0){
-    reday.innerHTML = usday;
-    }
-    else{
-    reday.innerHTML = aday;
-    }
-    }   
+    switch(usmon){
+        case '':ermon.innerHTML ='This field is required';
+                myLabe2.style.color = 'crimson'
+                dmonth.style.borderColor = 'crimson'
+                break;
 
+        case (usday > 31 ): ermon.innerHTML ='Must be a valid month';
+                            myLabe2.style.color = 'crimson'
+                            dmonth.style.borderColor = 'crimson'
+                            break;
+
+        default:remon.innerHTML = months;
+                break;
+    }
     
-    if(usmon==''){
-        ermon.innerHTML ='This field is required';
-        myLabe2.style.color = 'crimson'
-        month.style.borderColor = 'crimson'
-    }
-    else if(usmon > 12){
-        ermon.innerHTML ='Must be a valid month';
-        myLabe2.style.color = 'crimson'
-        month.style.borderColor = 'crimson'
-    }
-    else{
-    var amon = cumonth - usmon;
-    if(amon <0){
-    remon.innerHTML = usmon;
-    }
-    else{
-    remon.innerHTML = amon;
-    }
-    }  
+    switch(usyear){
+        case '':eryer.innerHTML ='This field is required';
+                myLabe3.style.color = 'crimson'
+                dyear.style.borderColor  = 'crimson'
+                break;
 
-    if(usyear==''){
-        eryer.innerHTML ='This field is required';
-        myLabe3.style.color = 'crimson'
-        year.style.borderColor  = 'crimson'
-    }
-    else if(usyear > cuyear){
-        eryer.innerHTML ='Must be a valid year';
-        myLabe3.style.color = 'crimson'
-        year.style.borderColor  = 'crimson'
-    }
-    else{
-        var  ayear = cuyear - usyear;
-        reyear.innerHTML = ayear;
-    }  
+        case (usday > 31 ): eryer.innerHTML ='Must be a valid year';
+                            myLabe3.style.color = 'crimson'
+                            dyear.style.borderColor  = 'crimson'
+                            break;
+
+        default:reyear.innerHTML = years;
+                break;
+    } 
 
 }
